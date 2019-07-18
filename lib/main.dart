@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import './transaction.dart';
+import './entries.dart';
+import './graph.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -8,43 +12,34 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final List<Transaction> transactions = [
+    Transaction(
+      id: '1',
+      title: 'Clothes',
+      amt: 500,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: '2',
+      title: 'Food',
+      amt: 100,
+      date: DateTime.now(),
+    )
+  ];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white70,
         appBar: AppBar(
           title: Text('Personal Expenses'),
           backgroundColor: Colors.deepOrange,
         ),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
-              margin: EdgeInsets.all(10),
-              width: double.infinity,
-              child: Card(
-                color: Colors.white,
-                child: Text('Graph'),
-                elevation: 5,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.all(10),
-              child: Card(
-                  color: Colors.amberAccent,
-                  child: Row(
-                    children: <Widget>[
-                      Text('Money'),
-                      Container(
-                        margin: EdgeInsets.all(5),
-                        color: Colors.amber,
-                        child: Column(
-                          children: <Widget>[Text('Item'), Text('Date')],
-                        ),
-                      )
-                    ],
-                  )),
-            ),
+            Graph(),
+            Entries(transactions),
           ],
         ),
       ),

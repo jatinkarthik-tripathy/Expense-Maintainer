@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Expenses Tracker',
+      title: 'Expenses Maintainer',
       home: MyHomePage(),
     );
   }
@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
       home: Scaffold(
         backgroundColor: Colors.white70,
         appBar: AppBar(
-          title: Text('Personal Expenses'),
+          title: Text('Expense Maintainer'),
           backgroundColor: Colors.deepOrange,
           actions: <Widget>[
             IconButton(

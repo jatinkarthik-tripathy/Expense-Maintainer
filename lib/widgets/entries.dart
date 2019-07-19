@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-import './transaction.dart';
+import '../models/transaction.dart';
 
 class Entries extends StatelessWidget {
   final List<Transaction> transactions;
@@ -11,10 +12,11 @@ class Entries extends StatelessWidget {
     return Container(
       margin: EdgeInsets.all(10),
       width: double.infinity,
-      child: Column(
-        children: transactions.map((tx) {
+      height: 500,
+      child: ListView.builder(
+        itemBuilder: (ctx, index) {
           return Card(
-            elevation: 50,
+            margin: EdgeInsets.only(bottom: 15),
             color: Colors.amberAccent,
             child: Row(
               children: <Widget>[
@@ -34,7 +36,7 @@ class Entries extends StatelessWidget {
                   ),
                   padding: EdgeInsets.all(10),
                   child: Text(
-                    tx.amt.toString(),
+                    '\$${transactions[index].amt}',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -45,13 +47,13 @@ class Entries extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      tx.title,
+                      transactions[index].title,
                       style: TextStyle(
                         fontSize: 18,
                       ),
                     ),
                     Text(
-                      tx.date.toString(),
+                      DateFormat.yMMMd().format(transactions[index].date),
                       style: TextStyle(
                         color: Colors.grey[800],
                         fontSize: 12,
@@ -62,7 +64,8 @@ class Entries extends StatelessWidget {
               ],
             ),
           );
-        }).toList(),
+        },
+        itemCount: transactions.length,
       ),
     );
   }

@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
 
-import './transaction.dart';
-import './entries.dart';
-import './graph.dart';
+import './models/transaction.dart';
+import './widgets/graph.dart';
+import './widgets/entries.dart';
+import './widgets/new_transactions.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Expenses Tracker',
+      home: MyHomePage(),
+    );
+  }
 }
 
-class _MyAppState extends State<MyApp> {
-  final List<Transaction> transactions = [
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final List<Transaction> _transactions = [
     Transaction(
       id: '1',
       title: 'Clothes',
@@ -26,6 +37,33 @@ class _MyAppState extends State<MyApp> {
       date: DateTime.now(),
     )
   ];
+
+  void _addNewTransaction(String txTitle, double txAmt) {
+    final newTx = Transaction(
+      title: txTitle,
+      amt: txAmt,
+      date: DateTime.now(),
+      id: DateTime.now().toString(),
+    );
+    setState(() {
+      _transactions.add(newTx);
+    });
+  }
+
+  void _startAddNewTransaction(BuildContext ctx) {
+    showModalBottomSheet(
+      context: ctx,
+      builder: (_) {
+        return GestureDetector(
+          onTap: () {},
+          child: NewTransaction(_addNewTransaction),
+          behavior: HitTestBehavior.opaque,
+        );
+      },
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,13 +72,26 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text('Personal Expenses'),
           backgroundColor: Colors.deepOrange,
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Graph(),
-            Entries(transactions),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () => _startAddNewTransaction(context),
+            )
           ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Graph(),
+              Entries(_transactions),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.deepOrange,
+          child: Icon(Icons.add),
+          onPressed: () => _startAddNewTransaction(context),
         ),
       ),
     );

@@ -23,20 +23,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: '1',
-      title: 'Clothes',
-      amt: 500,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: '2',
-      title: 'Food',
-      amt: 100,
-      date: DateTime.now(),
-    )
-  ];
+  final List<Transaction> _transactions = [];
 
   void _addNewTransaction(String txTitle, double txAmt) {
     final newTx = Transaction(
@@ -63,6 +50,15 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  List<Transaction> get _recentTx {
+    return _transactions.where((tx) {
+      return tx.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Graph(),
+              Graph(_recentTx),
               Entries(_transactions),
             ],
           ),

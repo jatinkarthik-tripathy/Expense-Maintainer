@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../models/transaction.dart';
+import './graph_bar.dart';
 
 class Graph extends StatelessWidget {
   final List<Transaction> recentTransactions;
@@ -27,25 +28,38 @@ class Graph extends StatelessWidget {
         'day': DateFormat.E().format(weekDay).substring(0, 1),
         'amount': totalSum,
       };
+    }).reversed.toList();
+  }
+
+  double get totalSpending {
+    return groupedTx.fold(0.0, (sum, item) {
+      return sum + item['amount'];
     });
   }
 
   @override
   Widget build(BuildContext context) {
     print(groupedTx);
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-      width: double.infinity,
-      child: Card(
-        color: Colors.amber,
-        elevation: 5,
-        margin: EdgeInsets.all(15),
+    return Card(
+      color: Colors.amberAccent[700],
+      elevation: 6,
+      margin: EdgeInsets.all(15),
+      child: Padding(
+        padding: EdgeInsets.all(10),
         child: Row(
-          children: <Widget>[
-            ...groupedTx.map((data){
-              return Text('${data['day']}: ${data['amt']}');
-            }).toList(),
-          ],
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: groupedTx.map((data) {
+            return Flexible(
+              fit: FlexFit.tight,
+              child: GraphBar(
+                data['day'],
+                data['amount'],
+                totalSpending == 0.0
+                    ? 0.0
+                    : (data['amount'] as double) / totalSpending,
+              ),
+            );
+          }).toList(),
         ),
       ),
     );

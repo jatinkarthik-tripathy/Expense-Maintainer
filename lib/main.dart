@@ -25,11 +25,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [];
 
-  void _addNewTransaction(String txTitle, double txAmt) {
+  void _addNewTransaction(String txTitle, double txAmt, DateTime txDate) {
     final newTx = Transaction(
       title: txTitle,
       amt: txAmt,
-      date: DateTime.now(),
+      date: txDate,
       id: DateTime.now().toString(),
     );
     setState(() {
@@ -63,8 +63,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Expense Maintainer',
+      theme: ThemeData(
+        primarySwatch: Colors.amber,
+        accentColor: Colors.amberAccent,
+      ),
       home: Scaffold(
-        backgroundColor: Colors.white70,
+        backgroundColor: Colors.white60,
         appBar: AppBar(
           title: Text('Expense Maintainer'),
           backgroundColor: Colors.deepOrange,

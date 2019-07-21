@@ -39,7 +39,6 @@ class Graph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(groupedTx);
     return Card(
       color: Colors.amberAccent[700],
       elevation: 6,

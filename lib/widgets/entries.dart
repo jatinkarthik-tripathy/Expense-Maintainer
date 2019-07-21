@@ -5,7 +5,8 @@ import '../models/transaction.dart';
 
 class Entries extends StatelessWidget {
   final List<Transaction> transactions;
-  Entries(this.transactions);
+  Function deleteTx;
+  Entries(this.transactions, this.deleteTx);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,8 @@ class Entries extends StatelessWidget {
                 ),
                 Container(
                   height: 250,
-                  child: Image.asset('assets/images/waiting.png', fit: BoxFit.cover),
+                  child: Image.asset('assets/images/waiting.png',
+                      fit: BoxFit.cover),
                 ),
               ],
             )
@@ -56,24 +58,28 @@ class Entries extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            transactions[index].title,
-                            style: TextStyle(
-                              fontSize: 18,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              transactions[index].title,
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
-                          ),
-                          Text(
-                            DateFormat.yMMMd().format(transactions[index].date),
-                            style: TextStyle(
-                              color: Colors.grey[800],
-                              fontSize: 12,
+                            Text(
+                              DateFormat.yMMMd()
+                                  .format(transactions[index].date),
+                              style: TextStyle(
+                                color: Colors.grey[800],
+                                fontSize: 12,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
+                      IconButton(icon: Icon(Icons.delete), onPressed: () => deleteTx(transactions[index].id))
                     ],
                   ),
                 );

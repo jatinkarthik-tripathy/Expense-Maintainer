@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import './models/transaction.dart';
 import './widgets/graph.dart';
 import './widgets/entries.dart';
 import './widgets/new_transactions.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -39,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _deleteTx(String id) {
     setState(() {
-     _transactions.removeWhere((tx) => tx.id == id); 
+      _transactions.removeWhere((tx) => tx.id == id);
     });
   }
 
@@ -68,6 +75,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: Text('Expense Maintainer'),
+      backgroundColor: Colors.deepOrange,
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _startAddNewTransaction(context),
+        )
+      ],
+    );
+
     return MaterialApp(
       title: 'Expense Maintainer',
       theme: ThemeData(
@@ -76,22 +94,24 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       home: Scaffold(
         backgroundColor: Colors.white60,
-        appBar: AppBar(
-          title: Text('Expense Maintainer'),
-          backgroundColor: Colors.deepOrange,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () => _startAddNewTransaction(context),
-            )
-          ],
-        ),
+        appBar: appBar,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Graph(_recentTx),
-              Entries(_transactions, _deleteTx),
+              Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.25,
+                child: Graph(_recentTx),
+              ),
+              Container(
+                  height: (MediaQuery.of(context).size.height -
+                          appBar.preferredSize.height -
+                          MediaQuery.of(context).padding.top) *
+                      0.75,
+                  child: Entries(_transactions, _deleteTx)),
             ],
           ),
         ),

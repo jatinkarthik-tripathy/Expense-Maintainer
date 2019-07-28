@@ -13,7 +13,6 @@ class Entries extends StatelessWidget {
     return Container(
       margin: EdgeInsets.all(10),
       width: double.infinity,
-      height: 500,
       child: transactions.isEmpty
           ? Column(
               children: <Widget>[
@@ -22,7 +21,7 @@ class Entries extends StatelessWidget {
                   height: 30,
                 ),
                 Container(
-                  height: 250,
+                  height: MediaQuery.of(context).size.height * 0.3,
                   child: Image.asset('assets/images/waiting.png',
                       fit: BoxFit.cover),
                 ),
